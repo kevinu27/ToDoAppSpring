@@ -1,12 +1,14 @@
 <script>
 import axios from 'axios';
 import Task from './Task.vue'
+import AddTask from './AddTask.vue'
 import { RouterLink, RouterView } from 'vue-router'
 
 
 export default {
   components: {
-    Task // Debes registrar el componente Task dentro de este componente
+    Task, // Debes registrar el componente Task dentro de este componente
+    AddTask
   },
   data() {
     return {
@@ -20,6 +22,9 @@ export default {
         this.dataLoaded = true;
         this.tasks = response.data;
         console.log('response', response)
+        this.$store.state.tasks = response.data
+        console.log('this.$store.state.tasks', this.$store.state.tasks)
+        console.log('typeof this.$store.state.tasks--------------', typeof response.data)
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -30,7 +35,9 @@ export default {
 
 </script>
 
-<template>  
+<template> 
+<div class="tasklist">
+  <AddTask/>
   <div class="tasks" v-for="(task, index) in tasks" :key="index">
     <Task  :task="task"/>
     
@@ -38,12 +45,15 @@ export default {
     <!-- {{ task.descripcion }} -->
   
   </div>
+
+</div>
+
 </template>
 
 <style scoped>
 .tasks{
   /* background-color: green; */
-  width: 100%;
+  width: 70%;
   display: flex;
   justify-content: center;
 }
@@ -57,16 +67,10 @@ h1 {
 h3 {
   font-size: 1.2rem;
 }
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.tasklist{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

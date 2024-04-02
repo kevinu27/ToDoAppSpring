@@ -1,18 +1,42 @@
 <script>
 
 export default {
-
+  data() {
+    return {
+      task: {},
+      tasks:  this.$store.state.tasks
+    };
+  },
 
   mounted() {
-    console.log('TASK DETAIL componenete!!!')
-  }
+    console.log('tasks del state', this.$store.state.tasks )
+    console.log('this.$route.params.id', this.$route.params.id )
+    console.log('typeof tasks del state------------------', typeof this.$store.state.tasks )
+    
+    // console.log()
+    // const task =this.$store.state.tasks
+    this.task = this.$store.state.tasks.filter(task => task.idTarea == this.$route.params.id ).flat(0)
+    const [task] = this.task
+    this.task = task
+    console.log('task', task)
+    // store.commit('increment')
+    // filter((word) => word.length > 6);
+  // console.log(store.state.count) // -> 1
+  },
+  methods: {
+    increment() {
+      console.log('type of this.$store.state.tasks',  typeof this.task)
+    }
+}
 }
 
 </script>
 
 <template>
-    <div class="cardDetail">
-      cardDetail
+    <div class="cardDetail" @click="increment">
+      <!-- cardDetail -->
+     idTarea: {{ task.idTarea }}
+     descripcion: {{ task.descripcion }}
     </div>
 </template>
 
@@ -27,26 +51,7 @@ export default {
   margin-top: 2em;
   padding: 2em;
 }
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.cardDetail{
+  border: 2px solid red;
 }
 </style>
