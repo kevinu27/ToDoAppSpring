@@ -3,14 +3,18 @@
 export default {
     props: {
     task: {
-      type: String,
+      type: Object,
       required: true
+    }
+  },
+  methods: {
+    deleteTask() {
+     console.log('delete')
     }
   },
 
   mounted() {
-console.log('TASK componenete')
-console.log('estado', this.$store.state.numberOfPlayers )
+
 
   }
 }
@@ -19,12 +23,17 @@ console.log('estado', this.$store.state.numberOfPlayers )
 
 <template>
  <div class="card-container">
-    <!-- Incluye todo el contenido del enlace dentro de las etiquetas de router-link -->
+    <div @click="deleteTask">sd</div>
     <router-link class="card-link" :to="{ name: 'TaskDetail', params: { id: task.idTarea }}">
-      <div class="card">
+      
+      <div class="card">  
+        <div class="closeContainer">
+            <h2 class="close" @click.prevent="deleteTask">X</h2>
+        </div>
         <p>{{ task.descripcion }}</p>
-    
+        <h2 class="close2">X</h2>
       </div>
+
     </router-link>
   </div>
 
@@ -32,17 +41,28 @@ console.log('estado', this.$store.state.numberOfPlayers )
 
 <style scoped>
 .card{
-  background-color: red;
-  /* width: 100%; */
+  background-color: rgb(141, 226, 228);
   display: flex;
   justify-content: center;
   border: 2px solid blue;
   border-radius: 2em;
   margin-top: 2em;
   padding: 2em;
+  flex-direction: column;
+  align-items: center;
+}
+.closeContainer{
+    display: flex;
+    justify-content: flex-end;
+    border: 2px solid red;
+    width: 100%;
+}
+.close{
+    display: flex;
+    border: 2px solid red;
+
 }
 .card-container{
-    /* border: 2px solid blue; */
     width: 100%;
 }
 h1 {
@@ -56,16 +76,8 @@ h3 {
   font-size: 1.2rem;
 }
 
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.close2{
+    color: rgb(141, 226, 228);
 }
 
 .card-link{
