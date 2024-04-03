@@ -16,8 +16,9 @@ export default {
       axios.post('http://localhost:8080/tarea-app/tareas', tarea)
         .then(response => {
           console.log('Tarea enviada:', response.data);   
-          this.setDescripcion = ''
-          this.setName = ''
+          this.setDescripcion = '';
+          this.setName = '';
+          this.$store.state.tasks.push(response.data)
         })
         .catch(error => {
           console.error('Error al enviar la tarea:', error);

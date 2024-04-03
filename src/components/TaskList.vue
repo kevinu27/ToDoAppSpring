@@ -36,7 +36,7 @@ export default {
 <template> 
 <div class="tasklist">
   <AddTask/>
-  <div class="tasks" v-for="(task, index) in tasks" :key="index">
+  <div class="tasks" v-for="(task, index) in this.$store.state.tasks" :key="index">
     <Task  :task="task"/>
     
     

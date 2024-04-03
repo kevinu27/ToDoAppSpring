@@ -14,6 +14,7 @@ export default {
      axios.delete(`http://localhost:8080/tarea-app/tarea/${this.task.idTarea}`)
         .then(response => {
           console.log('Tarea eliminada:', response.data);
+          this.$store.state.tasks = this.$store.state.tasks.filter(task => task.idTarea != this.task.idTarea)
         })
         .catch(error => {
           console.error('Error al eliminar la tarea:', error);
