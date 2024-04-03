@@ -1,5 +1,5 @@
 <script>
-
+import axios from 'axios';
 export default {
     props: {
     task: {
@@ -10,6 +10,14 @@ export default {
   methods: {
     deleteTask() {
      console.log('delete')
+     console.log('this.task.idTarea', this.task.idTarea)
+     axios.delete(`http://localhost:8080/tarea-app/tarea/${this.task.idTarea}`)
+        .then(response => {
+          console.log('Tarea eliminada:', response.data);
+        })
+        .catch(error => {
+          console.error('Error al eliminar la tarea:', error);
+        });
     }
   },
 
@@ -23,7 +31,6 @@ export default {
 
 <template>
  <div class="card-container">
-    <div @click="deleteTask">sd</div>
     <router-link class="card-link" :to="{ name: 'TaskDetail', params: { id: task.idTarea }}">
       
       <div class="card">  
@@ -54,7 +61,7 @@ export default {
 .closeContainer{
     display: flex;
     justify-content: flex-end;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 100%;
 }
 .close{
