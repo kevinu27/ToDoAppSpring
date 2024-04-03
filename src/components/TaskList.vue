@@ -23,6 +23,7 @@ export default {
         this.tasks = response.data;
         console.log('response', response)
         this.$store.state.tasks = response.data;
+        console.log('this.$store.state.tasks', this.$store.state.tasks)
       })
       .catch(error => {
         console.error('Error fetching data:', error);

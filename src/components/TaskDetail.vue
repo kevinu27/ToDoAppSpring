@@ -1,5 +1,5 @@
 <script>
-
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -9,23 +9,31 @@ export default {
   },
 
   mounted() {
-    console.log('tasks del state', this.$store.state.tasks )
-    console.log('this.$route.params.id', this.$route.params.id )
-    console.log('typeof tasks del state------------------', typeof this.$store.state.tasks )
-    
-    // console.log()
-    // const task =this.$store.state.tasks
-    this.task = this.$store.state.tasks.filter(task => task.idTarea == this.$route.params.id ).flat(0)
-    const [task] = this.task
-    this.task = task
-    console.log('task', task)
-    // store.commit('increment')
-    // filter((word) => word.length > 6);
-  // console.log(store.state.count) // -> 1
+    if(this.$store.state.tasks.length > 0) {
+      this.task = this.$store.state.tasks.filter(task => task.idTarea == this.$route.params.id ).flat(0)
+    }else{
+      axios.get('http://localhost:8080/tarea-app/tareas')
+      .then(response => {
+        this.apiData = response.data;
+        this.dataLoaded = true;
+        this.tasks = response.data;
+        this.$store.state.tasks = response.data;
+        this.task = this.$store.state.tasks.filter(task => task.idTarea == this.$route.params.id )
+        const [task] = this.task
+        this.task = task
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    }
+    if (Array.isArray(this.task)) {
+      const [task] = this.task
+      this.task = task
+    }
   },
   methods: {
     increment() {
-      console.log('type of this.$store.state.tasks',  typeof this.task)
+      console.log('type of this.$store.state.tasks',   this.task)
     }
 }
 }
@@ -34,9 +42,14 @@ export default {
 
 <template>
     <div class="cardDetail" @click="increment">
-      <!-- cardDetail -->
-     idTarea: {{ task.idTarea }}
-     descripcion: {{ task.descripcion }}
+      <h2>
+
+        idTarea: {{ task.idTarea }}
+      </h2>
+      <h2>
+            descripcion: {{ task.descripcion }}
+      </h2>
+ 
     </div>
 </template>
 
@@ -50,8 +63,15 @@ export default {
   border-radius: 2em;
   margin-top: 2em;
   padding: 2em;
+
 }
 .cardDetail{
-  border: 2px solid red;
+  border: 2px solid green;
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
 }
 </style>

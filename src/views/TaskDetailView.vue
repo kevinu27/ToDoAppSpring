@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <h1>This is Task page</h1>
     <TaskDetail/>
 
   </div>
@@ -15,20 +14,21 @@ export default {
   },
 
   mounted() {
-    console.log('TASK detail view componenete')
-    const taskId = this.$route.params.id;
-    console.log('ID de la tarea:', taskId);
+    // console.log('TASK detail view componenete')
+    // const taskId = this.$route.params.id;
+    // console.log('ID de la tarea:', taskId);
   }
 }
 
 </script>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+.about{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: auto;
+  border: 2px solid blue;
 }
 </style>
