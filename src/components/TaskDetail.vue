@@ -1,11 +1,18 @@
 <script>
 import axios from 'axios';
+import Subtask from '../components/Subtask.vue'
 export default {
+  
+  components: {
+    Subtask
+  },
   data() {
     return {
       task: {},
       tasks:  this.$store.state.tasks,
-      subtaskName: ''
+      subtaskName: '',
+      subtasks: [],
+      tasksubtasks:[]
     };
   },
 
@@ -32,7 +39,23 @@ export default {
       this.task = task
     }
 // llamada a las sub tareas
-
+axios.get('http://localhost:8080/tarea-app/subtareas')
+      .then(response => {
+        this.apiData = response.data;
+        this.dataLoaded = true;
+        this.subtasks = response.data;
+        this.$store.state.subtasks = response.data;
+        console.log('response subtareas', response.data)
+        // this.task = this.$store.state.subtasks.filter(task => task.idTarea == this.$route.params.id )
+        // const [task] = this.task
+        // this.task = task
+        this.tasksubtasks = this.$store.state.subtasks.filter(subtask =>  subtask.idTarea == this.$route.params.id)
+      console.log('this.$store.state.subtasks.filter', this.$store.state.subtasks)
+      console.log('this.tasksubtasks', this.tasksubtasks)
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+   
 
   },
   methods: {
@@ -47,6 +70,7 @@ export default {
           console.log('Subarea enviada:', response.data);   
           this.subtaskName = '';
           this.$store.state.subtasks.push(response.data)
+          // console.log('subtarea', this.subtarea)
         })
         .catch(error => {
           console.error('Error al enviar la tarea:', error);
@@ -69,6 +93,16 @@ export default {
       <h2>
             nombre: {{ task.nombre }}
       </h2>
+
+      <div>
+        <h2>
+          <!-- {{ subtarea.nombre }} -->
+          <div class="tasks" v-for="(subtask, index) in this.tasksubtasks" :key="index" >
+            {{subtask.nombre}}
+            <Subtask :subtask="subtask"/>
+          </div>
+        </h2>
+      </div>
 
       <div class="add" >
         <input type="text" placeholder="subtask name" v-model="subtaskName">
@@ -107,5 +141,9 @@ export default {
   align-items: center;
   width: 80%;
   border-radius: 2em;
+}
+
+.subtasks{
+  display: flex;
 }
 </style>
