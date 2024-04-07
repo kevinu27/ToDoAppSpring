@@ -12,7 +12,8 @@ export default {
   },
   data() {
     return {
-      tasks: []
+      tasks: [],
+      subtasks: []
     };
   },
   mounted() {
@@ -28,6 +29,21 @@ export default {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+
+      // llamada a las subtareas
+      axios.get('http://localhost:8080/tarea-app/subtareas')
+      .then(response => {
+        this.apiData = response.data;
+        this.dataLoaded = true;
+        this.subtasks = response.data;
+        this.$store.state.subtasks = response.data;
+        console.log('response subtareas', response.data)
+        // this.task = this.$store.state.subtasks.filter(task => task.idTarea == this.$route.params.id )
+        // const [task] = this.task
+        // this.task = task
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }
 
 }
@@ -39,14 +55,8 @@ export default {
   <AddTask/>
   <div class="tasks" v-for="(task, index) in this.$store.state.tasks" :key="index">
     <Task  :task="task"/>
-    
-    
-    <!-- {{ task.descripcion }} -->
-  
   </div>
-
 </div>
-
 </template>
 
 <style scoped>

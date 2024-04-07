@@ -4,7 +4,8 @@ export default {
   data() {
     return {
       task: {},
-      tasks:  this.$store.state.tasks
+      tasks:  this.$store.state.tasks,
+      subtaskName: ''
     };
   },
 
@@ -30,10 +31,26 @@ export default {
       const [task] = this.task
       this.task = task
     }
+// llamada a las sub tareas
+
+
   },
   methods: {
-    increment() {
-      console.log('type of this.$store.state.tasks',   this.task)
+    addubtask() {
+      const subtarea = {
+        completada: false,
+        idTarea: this.$route.params.id,
+        nombre: this.subtaskName
+      };
+      axios.post('http://localhost:8080/tarea-app/subtareas', subtarea)
+        .then(response => {
+          console.log('Subarea enviada:', response.data);   
+          this.subtaskName = '';
+          this.$store.state.subtasks.push(response.data)
+        })
+        .catch(error => {
+          console.error('Error al enviar la tarea:', error);
+      });
     }
 }
 }
@@ -49,11 +66,27 @@ export default {
       <h2>
             descripcion: {{ task.descripcion }}
       </h2>
- 
+      <h2>
+            nombre: {{ task.nombre }}
+      </h2>
+
+      <div class="add" >
+        <input type="text" placeholder="subtask name" v-model="subtaskName">
+        <h1 @click="addubtask">+</h1>
+      </div>
     </div>
 </template>
 
 <style scoped>
+.add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2em;
+  margin-top: 2em;
+  padding: 2em;
+  flex-direction: column;
+}
 .card{
   background-color: red;
   width: 100%;
@@ -73,5 +106,6 @@ export default {
   justify-content: center;
   align-items: center;
   width: 80%;
+  border-radius: 2em;
 }
 </style>

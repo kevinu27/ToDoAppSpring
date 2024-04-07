@@ -7,6 +7,7 @@ const store = createStore ({
         return {
             numberOfPlayers: 11,
             tasks: [],
+            subtasks: []
         
         }     
     },
